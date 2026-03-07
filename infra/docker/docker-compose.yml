@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: b2_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: b2_database
+      POSTGRES_USER: b2_user
+      POSTGRES_PASSWORD: b2pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - b2_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U b2_user -d b2_database"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  b2_postgres_data:
